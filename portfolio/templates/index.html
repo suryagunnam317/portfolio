@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f4f9;--ink:#111827;--muted:#4b5563;--line:#cfd8e6;--accent:#2b44ff;--panel:#ffffff}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1320;--ink:#eef2fb;--muted:#a3adc2;--line:#27314a;--accent:#7f92ff;--panel:#161d30}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.65 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.05;margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 1.5rem}
+nav{display:flex;justify-content:space-between;gap:1rem;padding:1.25rem 0;flex-wrap:wrap}
+nav a{margin-right:1.25rem;text-decoration:none;color:var(--ink);font-weight:500}
+nav a:hover{color:var(--accent)}
+.hero{padding:4rem 0 3rem}
+.hero h1{font-size:clamp(3rem,11vw,8rem);font-weight:800;letter-spacing:-.04em}
+.hero p{max-width:34rem;color:var(--muted);font-size:1.2rem;margin:1.5rem 0 0}
+section{padding:3rem 0;border-top:1px solid var(--line)}
+h2{font-size:2rem;font-weight:800;margin-bottom:1.5rem}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.proj{background:var(--panel);border:1px solid var(--line);padding:1.5rem;border-radius:6px}
+.proj h3{font-size:1.4rem;margin-bottom:.5rem}
+.proj p{margin:.25rem 0 .75rem;color:var(--muted)}
+.tags{font-size:.9rem;color:var(--muted)}
+.skills{display:flex;flex-wrap:wrap;gap:.5rem;padding:0;list-style:none}
+.skills li{border:1px solid var(--line);padding:.3rem .8rem;border-radius:99px;background:var(--panel)}
+form{display:grid;gap:1rem;max-width:34rem}
+label{display:grid;gap:.35rem;font-weight:500}
+input,textarea{font:inherit;padding:.7rem;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)}
+button{font:inherit;font-weight:500;padding:.8rem 1.4rem;border:0;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;justify-self:start}
+@media (prefers-color-scheme:dark){button{color:#0e1320}}
+button:disabled{opacity:.6;cursor:wait}
+#status{min-height:1.5rem;margin:0}
+#status.err{color:#c62828}
+footer{padding:2rem 0 3rem;border-top:1px solid var(--line);color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav aria-label="Main">
+  <strong>Your Name</strong>
+  <div><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a></div>
+</nav>
+
+<header class="hero">
+  <h1>Your Name</h1>
+  <p>I am a [your course, year] student at [your college] who builds [web apps / data projects / etc.]. Replace this line with one sentence about what you do best.</p>
+</header>
+
+<section id="about">
+  <h2>About me</h2>
+  <p style="max-width:40rem">Write 3 or 4 sentences: where you study, what you enjoy building, and what you want to do next. Keep it specific.</p>
+</section>
+
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="grid">
+    <article class="proj"><h3>Project one</h3><p>What it does and who it is for, in one or two sentences.</p><div class="tags">Python, Flask</div><p><a href="#">View code</a></p></article>
+    <article class="proj"><h3>Project two</h3><p>What it does and who it is for, in one or two sentences.</p><div class="tags">HTML, CSS, JavaScript</div><p><a href="#">View code</a></p></article>
+    <article class="proj"><h3>Project three</h3><p>What it does and who it is for, in one or two sentences.</p><div class="tags">Your stack</div><p><a href="#">View code</a></p></article>
+  </div>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <ul class="skills"><li>Python</li><li>Flask</li><li>HTML and CSS</li><li>JavaScript</li><li>SQL</li><li>Git and GitHub</li></ul>
+</section>
+
+<section id="contact">
+  <h2>Contact me</h2>
+  <form id="contact-form" novalidate>
+    <label>Name <input name="name" required maxlength="80" autocomplete="name"></label>
+    <label>Email <input name="email" type="email" required autocomplete="email"></label>
+    <label>Message <textarea name="message" rows="5" required maxlength="1000"></textarea></label>
+    <button type="submit">Send message</button>
+    <p id="status" role="status" aria-live="polite"></p>
+  </form>
+</section>
+
+<footer>
+  <p>You are visitor number <strong>{{ visits }}</strong>. Contact: <a href="mailto:you@example.com">you@example.com</a> | <a href="https://github.com/yourname">GitHub</a> | <a href="https://linkedin.com/in/yourname">LinkedIn</a></p>
+</footer>
+</div>
+
+<script>
+const form = document.getElementById('contact-form');
+const status = document.getElementById('status');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = form.querySelector('button');
+  btn.disabled = true; status.className = ''; status.textContent = 'Sending...';
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    });
+    const data = await res.json();
+    if (data.ok) { status.textContent = data.message; form.reset(); }
+    else { status.className = 'err'; status.textContent = data.error; }
+  } catch {
+    status.className = 'err'; status.textContent = 'Could not reach the server. Try again.';
+  }
+  btn.disabled = false;
+});
+</script>
+</body>
+</html>
